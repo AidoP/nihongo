@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang=en>
+    <head>
+        <meta charset="utf8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>日本語 - Kana Practice</title>
+        <script>
+            var kana = {
+                hiragana: [],
+                hiragana_dakuten: [],
+                hiragana_yoon: [],
+                かたかな: [],
+                かたかな_だくてん: []
+            };
+            for (let set in kana) {
+                fetch(set + '.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        kana[set] = data;
+                        document.getElementById(set).removeAttribute("disabled");
+                        if (document.getElementById(set).checked) {
+                            update_cards();
+                        }
+                    });
+            }
+
+            var cards = [];
+
+            function next_card() {
+                if (cards.length < 1) {
+                    document.getElementById('kana').textContent = "?";
+                    document.getElementById('romaji').textContent = "No Kana Loaded";
+                } else {
+                    let card = Math.floor(Math.random() * cards.length);
+                    document.getElementById('kana').textContent = cards[card].kana;
+                    document.getElementById('romaji').textContent = cards[card].romaji;
+                }
+            }
+            function update_cards() {
+                cards = [];
+                for (let set in kana) {
+                    if (document.getElementById(set).checked && !document.getElementById(set).disabled) {
+                        cards = cards.concat(kana[set])
+                    }
+                }
+                next_card();
+            }
+        </script>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                overflow: hidden;
+            }
+            #clickable {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            }
+            #repo {
+                position: absolute;
+                text-decoration: none;
+                width: auto;
+                height: 2.5em;
+                top: 0;
+                left: 0;
+                padding: 0.2em;
+            }
+            #options_button {
+                position: absolute;
+                text-decoration: none;
+                font-size: 2em;
+                top: 0;
+                right: 0;
+                padding: 0.2em;
+            }
+            #options {
+                position: absolute;
+                top: 100vh;
+                left: 0;
+                width: calc(100vw - 4em);
+                height: 50vw;
+                margin: 0;
+                padding: 2em;
+                border-top: 1px solid black;
+                background-color: white;
+                z-index: 1000;
+                transition: top 0.1s ease-in-out;
+            }
+            .active {
+                top: 50vh!important;
+            }
+            #container {
+                position: absolute;
+                top:0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                width: min(calc(80vh * 0.75), 70vw);
+                height: 80vh;
+                perspective: 50em;
+                user-select: none;
+                -webkit-user-select: none;
+            }
+            #front {
+                transform: rotateY(0);
+            }
+            #container:active #front {
+                transform: rotateY(180deg);
+            }
+            #back {
+                transform: rotateY(180deg);
+            }
+            #container:active #back {
+                transform: rotateY(360deg);
+            }
+            .buffer {
+                padding: 2em;
+            }
+            .card {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: block;
+                border: 1px solid black;
+                border-radius: 5px;
+                box-shadow: 4px 4px 8px black;
+                transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55);
+                transform-style: preserve-3d;
+                backface-visibility: hidden;
+                -moz-backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+            }
+            #kana {
+                font-size: 20vh;
+            }
+            #romaji {
+                font-size: 2em;
+            }
+            #kana, #romaji {
+                margin: 1.25em 0 0 0;
+                text-align: center;
+            }
+            input {
+                margin: 0.5em 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <noscript><h1 style="text-align: center;">JavaScript is required.</h1></noscript>
+        <div id="clickable" onclick="next_card()">
+        </div>
+        <div id="container" ontouchstart="">
+            <div class="buffer">
+                <div class="card" id="front">
+                    <h1 id="kana">?</h1>
+                </div>
+                <div class="card" id="back">
+                    <h2 id="romaji">No Kana Loaded</span>
+                </div>
+            </div>
+        </div>
+        <a href="https://github.com/AidoP/nihongo"><img src="/github_light.png" id="repo"/></a>
+        <a href="#" id="options_button" onclick="document.getElementById('options').classList.toggle('active')">⚙️</a>
+        <div id="options">
+            <div>
+                <input id="hiragana" type="checkbox" onclick="update_cards()" disabled checked>
+                <label for="hiragana">Hiragana</label>
+            </div>
+            <div>
+                <input id="hiragana_dakuten" type="checkbox" onclick="update_cards()" disabled>
+                <label for="hiragana_dakuten">Hiragana Dakuten</label>
+            </div>
+            <div>
+                <input id="hiragana_yoon" type="checkbox" onclick="update_cards()" disabled>
+                <label for="hiragana_yoon">Hiragana Yoon</label>
+            </div>
+            <div>
+                <input id="かたかな" type="checkbox" onclick="update_cards()" disabled>
+                <label for="かたかな">かたかな</label>
+            </div>
+            <div>
+                <input id="かたかな_だくてん" type="checkbox" onclick="update_cards()" disabled>
+                <label for="かたかな_だくてん">かたかなとだくてん</label>
+            </div>
+        </div>
+    </body>
+</html>
