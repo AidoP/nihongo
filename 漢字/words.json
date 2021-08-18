@@ -1,0 +1,21 @@
+{
+    "日本": {
+        "word": [
+            ["日", "に"],
+            ["本", "ほん"]
+        ],
+        "translation": "Japan, Land of the Rising Sun"
+    },
+    "日": {
+        "word": [
+            ["日", "にち"]
+        ],
+        "translation": "Day, Counter for day"
+    },
+    "本": {
+        "word": [
+            ["本", "ほん"]
+        ],
+        "translation": "Book, Counter for various things"
+    }
+}

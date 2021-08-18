@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Kanji</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+            }
+            main, nav {
+                display: inline-block;
+                width: 50%;
+                vertical-align: top;
+                overflow-y: scroll;
+                height: 100vh;
+            }
+            button {
+                padding: 0.25em;
+                font-size: 1em;
+                background-color: lightgray;
+                border: 1px solid gray;
+                border-radius: 5px;
+                transition: background-color 0.05s ease-in-out;
+            }
+            button:hover {
+                background-color: darkgray;
+                transition: background-color 0.05s ease-in-out;
+            }
+            button:active {
+                background-color: gray;
+                transition: background-color 0.05s ease-in-out;
+            }
+            .hidden {
+                display: none;
+            }
+            .content {
+                padding: 3em 10vw;
+            }
+            .search {
+                display: block;
+                padding: 0.25em 0.5em;
+                width: 100%;
+                font-size: 2em;
+                margin-bottom: 2em;
+                border: 2px solid gray;
+                border-radius: 5px;
+            }
+            .search_fail {
+                border: 2px solid red;
+            }
+            #kanji, #word {
+                font-size: 10em;
+            }
+            .romanize {
+                text-decoration: none;
+            }
+            .romanize .romanization {
+                user-select: none;
+                margin: 0;
+                padding: 0;
+                display: inline-block;
+                width: 0;
+            }
+            .romanize:active, .romanize .romanization {
+                transition: color 0.2s ease-in-out;
+                color: transparent;
+            }
+            .romanize:active .romanization, .romanize {
+                transition: color 0.2s ease-in-out;
+                color: black;
+            }
+            .vocab {
+                padding: 0.5em;
+                overflow-x: scroll;
+            }
+            .vocab > span {
+                margin: 0.25em;
+                padding: 0.25em;
+                font-size: 1.5em;
+                border-radius: 3px;
+                color: white;
+                background-color: rgb(212, 24, 87);
+            }
+            .readings {
+                padding-left: 2em;
+            }
+            .clickable, .word, a {
+                cursor: pointer;
+            }
+        </style>
+        <script>
+            function dmak_play(n) {
+                if (n.textContent == "⏵︎") {
+                    dmak.render();
+                    n.textContent = "⏸︎";
+                } else {
+                    dmak.pause();
+                    n.textContent = "⏵︎";
+                }
+            }
+            function dmak_reset() {
+                dmak.pause();
+                dmak.erase();
+                document.getElementById("dmak_play").textContent = "⏵︎";
+            }
+        </script>
+        <script src="index.js"></script>
+        <script src="raphael.min.js"></script>
+        <script src="dmak.min.js"></script>
+    </head>
+    <body>
+        <main>
+            <div class="content">
+                <input id="word_search" class="search" type="search" placeholder="Word" oninput="set_word(this.value)">
+                <ruby id="word"></ruby>
+                <h1>Translation</h1>
+                <p id="translation"></p>
+                <h1>Stroke Order</h1>
+                <div id="dmak_area"></div>
+                <button style="margin-right: 0.5em;" onclick="dmak_reset()">⏮︎</button><button style="border-radius: 5px 0 0 5px;" onclick="dmak.eraseLastStrokes(1)">⏪︎</button><button style="border-radius: 0; border-left: none; border-right: none;" onclick="dmak_play(this)" id="dmak_play">⏵︎</button><button style="border-radius: 0 5px 5px 0;" onclick="dmak.renderNextStrokes(1)">⏩︎</button>
+            </div>
+        </main><nav>
+            <div class="content">
+                <input id="kanji_search" class="search" type="search" placeholder="Kanji" oninput="set_kanji(this.value)">
+                <ruby id="kanji"></ruby>
+                <h1 id="meaning_heading" class="hidden">Meaning</h1>
+                <p id="meaning" class="hidden"></p>
+                <a class="romanize"><h1 id="onyomi"><p class="romanization">onyomi</p><ruby>音<rt>おん</rt></ruby><ruby>読<rt>よ</rt></ruby>み</h1></a>
+                <div id="onyomi_content" class="readings">
+                </div>
+                <a class="romanize"><h1 id="kunyomi" ><p class="romanization">kunyomi</p><ruby>訓<rt>くん</rt></ruby><ruby>読<rt>よ</rt></ruby>み</h1></a>
+                <div id="kunyomi_content" class="readings">
+                </div>
+                <h1 id="other_reading">Other Readings</h1>
+                <div id="other_reading_content" class="readings">
+                </div>
+            </div>
+        </nav>
+    </body>
+    <script>
+        let args = window.location.search.replace('?', '').split('&').reduce(function(map, arg) {
+            let parts = arg.split('=');
+            if (parts.length != 2) {
+                return map;
+            }
+            map[parts[0]] = decodeURI(parts[1]);
+            return map;
+        }, {});
+        if (args.word) word_search.value = args.word;
+        if (args.kanji) kanji_search.value = args.kanji;
+    </script>
+</html>

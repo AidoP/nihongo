@@ -1,0 +1,31 @@
+{
+    "日": {
+        "reading": "にち",
+        "meaning": "Sun, Day",
+        "onyomi": {
+            "にち": ["日", "日本"],
+            "じつ": []
+        },
+        "kunyomi": {
+            "ひ": [],
+            "か": [],
+            "び": []
+        },
+        "other_reading": {
+
+        }
+    },
+    "本": {
+        "reading": "にち",
+        "meaning": "Book, Origin, Source",
+        "onyomi": {
+            "ほん": ["本", "日本"]
+        },
+        "kunyomi": {
+            "もと": []
+        },
+        "other_reading": {
+
+        }
+    }
+}
