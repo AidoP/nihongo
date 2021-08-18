@@ -2,7 +2,7 @@
 Kanji and Japanese vocabulary memorisation and dictionary. Intended as a simpler and less English-oriented alternative to WaniKani.
 
 # Usage
-[Hosted on GitHub pages](https://portfolio.trifuse.xyz/日本語/漢字). Unfortunately this means heavy reliance on JavaScript and increased load on the browser.
+[Hosted on GitHub pages](https://portfolio.trifuse.xyz/nihongo/漢字). Unfortunately this means heavy reliance on JavaScript and increased load on the browser.
 
 # Goals & Ideas
 - [x] Basic Kanji & Vocab Info
